@@ -15,6 +15,12 @@ const filePathBase = 'C:/xxxx/xxxx';  //public_html
 const phpCgiPath = 'C:/php/php-cgi.exe';
 ```
 
+# Run
+```
+node httpsphpserver.js
+```
+Open `https://localhost` in your web browser
+
 # Not compatible with De-Panther/unity-webxr-export.
 De-Panther/unity-webxr-export uses a fixed index.html file.  
 Therefore, it requires a mechanism to interpret index.html as a PHP file.  
