@@ -51,7 +51,9 @@ app.use((req, res, next) => {
     SERVER_NAME: req.hostname,
     SERVER_PORT: req.socket.localPort,
     CONTENT_TYPE: req.headers['content-type'] || '',
-    CONTENT_LENGTH: req.headers['content-length'] || '0'
+    CONTENT_LENGTH: req.headers['content-length'] || '0',
+    HTTPS: req.protocol === 'https' ? 'on' : 'off',
+    HTTP_HOST: req.headers.host || req.hostname
   };
 
   const phpCgi = spawn(phpCgiPath, ['-f', filePath], { env });
