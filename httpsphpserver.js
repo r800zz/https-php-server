@@ -41,7 +41,7 @@ app.use((req, res, next) => {
   const env = {
     ...process.env,
     REDIRECT_STATUS: '200',
-    SCRIPT_NAME: filePath,
+    SCRIPT_NAME: relativePath,
     SCRIPT_FILENAME: filePath,
     QUERY_STRING: queryString || '',
     REQUEST_METHOD: req.method,
@@ -129,3 +129,4 @@ app.use(express.static(filePathBase));
 https.createServer(options, app).listen(443, () => {
   console.log('✅ HTTPS Server running on port 443');
 });
+
