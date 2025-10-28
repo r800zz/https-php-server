@@ -42,6 +42,7 @@ $_SERVER['HTTPS']
 $_SERVER['HTTP_HOST']
 ```
 HTTPS and HTTP_HOST support added. (29 October 2025)
+Bug fix "SCRIPT_NAME". (29 October 2025)
 
 # Not compatible with De-Panther/unity-webxr-export.
 De-Panther/unity-webxr-export uses a fixed index.html file.  
