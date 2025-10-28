@@ -24,6 +24,25 @@ Open `https://localhost` in your web browser
 # Supports POST and GET requests
 POST support added. (20 October 2025)
 
+# Suppots $_SERVER['xxxxxx']
+```
+$_SERVER['REDIRECT_STATUS']
+$_SERVER['SCRIPT_NAME']
+$_SERVER['SCRIPT_FILENAME']
+$_SERVER['QUERY_STRING']
+$_SERVER['REQUEST_METHOD']
+$_SERVER['REQUEST_URI']
+$_SERVER['REMOTE_ADDR']
+$_SERVER['SERVER_PROTOCOL']
+$_SERVER['SERVER_NAME']
+$_SERVER['SERVER_PORT']
+$_SERVER['CONTENT_TYPE']
+$_SERVER['CONTENT_LENGTH']
+$_SERVER['HTTPS']
+$_SERVER['HTTP_HOST']
+```
+HTTPS and HTTP_HOST support added. (29 October 2025)
+
 # Not compatible with De-Panther/unity-webxr-export.
 De-Panther/unity-webxr-export uses a fixed index.html file.  
 Therefore, it requires a mechanism to interpret index.html as a PHP file.  
