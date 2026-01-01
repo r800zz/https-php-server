@@ -1,9 +1,20 @@
 // Node.js HTTPS + PHP CGI Server
 //Supports POST and GET requests
+//Supports Brotli(.br),Gzip(.gz) (for De-Panther/unity-webxr-export.) 
+//Supports index.html PHP mode (for De-Panther/unity-webxr-export.) 
+//Requirements:
+//Node.js and PHP must be installed.
+//npm install express express-static-gzip
+//Userge:
+//normal mode(index.html = not PHP)
 //node httpsphpserver.js
-const keypempath = 'c:/xxxx/key.pem'
-const certpempath = 'c:/xxxx/cert.pem'
-const filePathBase = 'C:/xxxx/xxxx';  //public_html
+//index.hmtl = PHP mode (for De-Panther/unity-webxr-export.) 
+//node httpsphpserver.js 1
+
+//Settings
+const keypempath = 'C:/xxxx/key.pem';
+const certpempath = 'C:/xxxx/cert.pem';
+const filePathBase = 'C:/xxxx/xxxx';  // public_html
 const phpCgiPath = 'C:/php/php-cgi.exe';
 
 const https = require('https');
@@ -11,12 +22,24 @@ const fs = require('fs');
 const express = require('express');
 const { spawn } = require('child_process');
 const path = require('path');
+const expressStaticGzip = require('express-static-gzip');
 
 const app = express();
 const options = {
   key: fs.readFileSync(keypempath),
   cert: fs.readFileSync(certpempath)
 };
+let unity_webxr = false;
+
+if(process.argv[2] == '1'){
+  unity_webxr = true;
+  console.log("index.html = PHP mode");
+}
+else{
+  console.log("index.html = not PHP mode");
+}
+console.log("\"node httpphpserver.js\"  index.html = not PHP mode");
+console.log("\"node httpphpserver.js 1\"  index.html = PHP mode");
 
 // Middleware to handle PHP requests
 app.use((req, res, next) => {
@@ -25,11 +48,23 @@ app.use((req, res, next) => {
   let relativePath = rawPath;
 
   if (relativePath.endsWith('/')) {
-    relativePath += 'index.php';
+    if(unity_webxr == true){
+      relativePath += 'index.html';
+    }
+    else{
+      relativePath += 'index.php';
+    }
   }
 
-  if (!relativePath.endsWith('.php')) {
-    return next();
+  if(unity_webxr == true){
+    if (!relativePath.endsWith('.php') && !relativePath.endsWith('index.html')) {
+      return next();
+    }
+  }
+  else{
+    if (!relativePath.endsWith('.php')) {
+      return next();
+    }
   }
 
   const filePath = path.join(filePathBase, relativePath);
@@ -68,7 +103,7 @@ app.use((req, res, next) => {
   });
 
   phpCgi.on('close', (code) => {
-    console.log(`php-cgi process exited with code ${code}`);
+    console.log(`php-cgi process exited with code ${code}`); 
     if (res.headersSent) return;
     if (code !== 0) {
       return res.status(500).send('PHP script execution failed.');
@@ -106,7 +141,7 @@ app.use((req, res, next) => {
     }
   });
 
-  // Handle POST body
+  // Handle POST body for PHP
   if (req.method === 'POST') {
     const bodyChunks = [];
     req.on('data', chunk => {
@@ -122,11 +157,28 @@ app.use((req, res, next) => {
   }
 });
 
-// Serve static files
-app.use(express.static(filePathBase));
+// ---------------------------------------------------------
+// 2. Static File Middleware (Brotli/Gzip/Wasm)
+// ---------------------------------------------------------
+app.use('/', expressStaticGzip(filePathBase, {
+  enableBrotli: true,
+  orderPreference: ['br', 'gz'], 
+  setHeaders: (res, path) => {
+    if (path.endsWith('.br')) {
+      res.setHeader('Content-Encoding', 'br');
+    } else if (path.endsWith('.gz')) {
+      res.setHeader('Content-Encoding', 'gzip');
+    }
+    
+    if (path.includes('.wasm')) {
+       res.setHeader('Content-Type', 'application/wasm');
+    }
+  }
+}));
 
-// Start HTTPS server
+// ---------------------------------------------------------
+// 3. Start Server
+// ---------------------------------------------------------
 https.createServer(options, app).listen(443, () => {
-  console.log('✅ HTTPS Server running on port 443');
+  console.log('✅ HTTPS Server running on port 443 (PHP & Unity WebXR Support)');
 });
-
