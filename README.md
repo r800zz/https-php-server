@@ -58,7 +58,7 @@ HTTPS and HTTP_HOST support added. (29 October 2025)
 
 Bug fix "SCRIPT_NAME". (29 October 2025)
 
-# Supports Brotili(.br) , Gzip(.gz)
+# Supports Brotli(.br) , Gzip(.gz)
 for De-Panther/unity-webxr-export.
 
 # Compatible with De-Panther/unity-webxr-export.
