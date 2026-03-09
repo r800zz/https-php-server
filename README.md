@@ -53,10 +53,13 @@ $_SERVER['CONTENT_TYPE']
 $_SERVER['CONTENT_LENGTH']
 $_SERVER['HTTPS']
 $_SERVER['HTTP_HOST']
+$_SERVER['HTTP_USER_AGENT']
 ```
 HTTPS and HTTP_HOST support added. (29 October 2025)
 
 Bug fix "SCRIPT_NAME". (29 October 2025)
+
+HTTP_USER_AGENT support added. (10 March 2026)
 
 # Supports Brotli(.br) , Gzip(.gz)
 for De-Panther/unity-webxr-export.
