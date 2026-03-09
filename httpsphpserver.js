@@ -88,7 +88,8 @@ app.use((req, res, next) => {
     CONTENT_TYPE: req.headers['content-type'] || '',
     CONTENT_LENGTH: req.headers['content-length'] || '0',
     HTTPS: req.protocol === 'https' ? 'on' : 'off',
-    HTTP_HOST: req.headers.host || req.hostname
+    HTTP_HOST: req.headers.host || req.hostname,
+    HTTP_USER_AGENT: req.headers['user-agent'] || ''
   };
 
   const phpCgi = spawn(phpCgiPath, ['-f', filePath], { env });
@@ -182,3 +183,4 @@ app.use('/', expressStaticGzip(filePathBase, {
 https.createServer(options, app).listen(443, () => {
   console.log('✅ HTTPS Server running on port 443 (PHP & Unity WebXR Support)');
 });
+
